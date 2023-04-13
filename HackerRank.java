@@ -936,3 +936,458 @@ class Result {
     return result;
     }
 }
+
+
+29. Counting frequency of array elements:
+
+
+package maang;
+import java.util.*;
+import java.io.*;
+
+
+public class CountingFrqeuencyOfArrayElements {
+	
+	public static void main(String[] args) {
+		int[] arr = new int[]{1,1,1,2,2,8,8,3,3,5,5,5,4,6,6,7,96,96,87,87,96,87};
+	HashMap<Integer,Integer> hmap = new HashMap<Integer,Integer>();
+	
+	for(int i=0; i<arr.length; i++) {
+		if(hmap.containsKey(arr[i])) {
+			int value = hmap.get(arr[i]);
+			hmap.put(arr[i], value+1);
+		}
+		else {
+			hmap.put(arr[i], 1);
+		}
+	}
+	
+	for(Integer key:hmap.keySet()) {
+		System.out.println(key+": "+hmap.get(key));
+	}
+	System.out.println(hmap.entrySet());
+   }
+}
+
+
+30. Missing numbers:
+
+
+public static List<Integer> missingNumbers(List<Integer> arr, List<Integer> brr) {
+    // Write your code here
+    List<Integer> result = new ArrayList<Integer>();
+    
+    HashMap<Integer,Integer> hmap = new HashMap<>();
+    for(int i=0; i<arr.size(); i++) {
+        int key = arr.get(i);
+        
+        if(hmap.containsKey(key)) {
+            int val = hmap.get(key);
+            hmap.put(key, val+1);
+        }
+        else {
+            hmap.put(key, 1);
+        }
+    }
+    
+    HashMap<Integer,Integer> hmap1 = new HashMap<>();
+    for(int j=0; j<brr.size(); j++) {
+        int key = brr.get(j);
+        
+        if(hmap1.containsKey(key)) {
+            int val = hmap1.get(key);
+            hmap1.put(key, val+1);
+        }
+        else {
+            hmap1.put(key, 1);
+        }
+    }
+    System.out.println(hmap);
+    System.out.println("***********************");
+    System.out.println(hmap1);
+    
+    for(Integer key1:hmap1.keySet()) {
+        int tempKey = key1;
+        int tempVal = hmap1.get(key1);
+        
+        for(Integer key:hmap.keySet()) {
+            int insideKey = key;
+            int insideVal = hmap.get(key);
+
+
+            if(tempKey==insideKey && tempVal!=insideVal) {
+                if( !(result.contains(insideKey)) ) {
+                result.add(insideKey);
+                }
+            }
+        }
+    }
+    
+    for(Integer key1:hmap1.keySet()) {
+        int tempKey = key1;
+        
+        for(Integer key:hmap.keySet()) {
+            
+            if(!(hmap.containsKey(tempKey)) && !(result.contains(tempKey))) {
+                result.add(tempKey);
+            }
+        }
+    }
+    
+    Collections.sort(result);
+    return result;
+    }
+
+
+31. Find the Median:
+
+
+public static int findMedian(List<Integer> arr) {
+    // Write your code here
+    Collections.sort(arr);
+    
+    int mid = arr.size()/2;
+    
+    return arr.get(mid);
+}
+
+
+32. Closest Numbers:
+
+
+public static List<Integer> closestNumbers(List<Integer> arr) {
+    // Write your code here
+    List<Integer> result = new ArrayList<>();
+    Collections.sort(arr);
+    int smallestDiff=Math.abs(arr.get(1) - arr.get(0));
+    int currDiff = 0;
+    
+    if(arr.size()==2) {
+        result = arr;
+        return result;
+    }
+    else {
+        //First for loop for calculating smallestDiff
+        for(int i=0; i<arr.size()-1; i++) {
+            currDiff = Math.abs(arr.get(i+1) - arr.get(i));
+           if(smallestDiff > currDiff) {
+               smallestDiff = currDiff;
+           }
+        }
+        System.out.println(smallestDiff);
+        
+        //Adding that pair of number from list which differences match with smallestDiff
+        for(int i=0; i<arr.size()-1; i++) {
+            int tempDiff = Math.abs(arr.get(i+1) - arr.get(i));
+            
+            if(tempDiff==smallestDiff) {
+                result.add(arr.get(i));
+                result.add(arr.get(i+1));
+            }
+        }
+        
+        return result;
+     } //else closing
+  } //method closing
+
+
+33. Sherlock & Array:
+
+
+Wrong Approach:
+
+
+public static int sum(List<Integer> arr,int i,int j) {
+    int sum=0;
+    
+    for(int k=i; k<=j; k++) {
+        sum += arr.get(k);
+    }
+    return sum;
+    }
+    
+    public static String balancedSums(List<Integer> arr) {
+    // Write your code here
+    int count=0;
+        
+        for(int i=1; i<arr.size()-1; i++) {
+            int leftSum = sum(arr, 0, i-1);
+            System.out.println("leftSum: "+leftSum);
+            
+            System.out.println("************************");
+            
+            int rightSum = sum(arr, i+1, arr.size()-1);
+            System.out.println("rightSum: "+rightSum);
+            System.out.println("End");
+            
+            if(leftSum==rightSum || (leftSum==0&&rightSum=0) {
+                count++;
+                break;
+            }
+        }
+        
+        if(count==1)
+            return "YES";
+        else
+            return "NO";
+}
+
+
+Right approach:
+
+
+ public static String balancedSums(List<Integer> arr) {
+    // Write your code here
+    int totalSum=0;
+    int leftSum=0;
+    
+    for(int i=0; i<arr.size(); i++) {
+        totalSum += arr.get(i);
+    }  
+    
+    for(int i=0; i<arr.size(); i++) {
+     totalSum = totalSum-arr.get(i);
+     
+     if(totalSum==leftSum) return "YES";
+     else leftSum = leftSum+arr.get(i);
+    }
+    return "NO";
+}
+
+
+34. Jim and the Orders: (Self solved)
+
+
+public static List<Integer> jimOrders(List<List<Integer>> orders) {
+    // Write your code here\
+    List<Integer> result = new ArrayList<>();
+    List<Integer> serve = new ArrayList<>();
+    
+    for(int i=0; i<orders.size(); i++) {
+        int serveTime = orders.get(i).get(0) + orders.get(i).get(1);
+        serve.add(serveTime);
+    }
+    Collections.sort(serve);
+    System.out.println(serve);
+    for(int i=0; i<serve.size(); i++) {
+        int val = serve.get(i);
+                
+        for(int j=0; j<orders.size(); j++) {
+        int serveTime = orders.get(j).get(0) + orders.get(j).get(1);
+        if(val == serveTime && !(result.contains(j+1))) {
+            result.add(j+1);
+            break;
+           }
+        }
+    }
+    return result;
+ }
+
+
+35. Mark and Toys: (Greedy)
+
+
+ public static int maximumToys(List<Integer> prices, int k) {
+    // Write your code here
+    int count=0;
+    
+    if(k == prices.get(0) && prices.size()==1) {
+        count++;
+        return count;
+    }
+    else {
+        count=0;
+    }
+    
+    Collections.sort(prices);    
+    int remain = k;
+    
+    for(int i=0; i<prices.size(); i++) {
+        //Checking for first element of ArrayList prices.
+        if(remain >= prices.get(i)) {
+            count += 1;
+        }
+        else if(!(remain >= prices.get(i))) {
+            break;
+        }
+        remain = remain - prices.get(i);
+    }
+    return count;
+}
+
+
+36. Nested ArrayList:
+
+
+package maang;
+import java.util.*;
+
+
+public class NestedArrayList {
+
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		List<ArrayList<Integer>> orders = new ArrayList<>();
+		
+		ArrayList<Integer> arr1 = new ArrayList<>();
+		arr1.add(1);
+		arr1.add(2);
+		
+		ArrayList<Integer> arr2 = new ArrayList<>();
+		arr2.add(11);
+		arr2.add(22);
+		arr2.add(33);
+		
+		orders.add(arr1);
+		orders.add(arr2);
+		
+		for(int i=0; i<orders.size(); i++)
+		{
+			for(int j=0; j<orders.get(i).size(); j++) {
+				System.out.println(orders.get(i).get(j));
+			}
+		}
+		
+		System.out.println(orders);
+	}
+}
+
+
+37. Insertion Sort - Part 1:
+
+
+ public static void insertionSort1(int n, List<Integer> arr) {
+    // Write your code here
+    int count=0;
+    int min = arr.get(arr.size()-1);
+    
+    for(int i=arr.size()-2; i>=0; i--) {
+        if(min < arr.get(i)) {
+            
+                arr.set(i+1, arr.get(i));
+                for(int j=0; j<n; j++) {
+                System.out.print(arr.get(j)+" ");
+                }
+                System.out.println();
+        }
+        else {
+            arr.set(i+1, min);
+            count++;
+            for(int j=0; j<n; j++) {
+            System.out.print(arr.get(j)+" ");
+            }
+        System.out.println();
+        break;
+        }
+    }
+    
+    if(count==0) {
+        arr.set(0,min);
+        for(int j=0; j<n; j++) {
+            System.out.print(arr.get(j)+" ");
+        }
+    }
+}
+
+
+
+
+38. Insertion Sort - Part 2:
+
+
+
+
+class Result {
+     
+     public static void printList(List<Integer> arr) {
+         for(int val:arr) {
+             System.out.print(val+" ");
+         }
+         System.out.println();
+     }
+     
+    public static void checkAgainst(List<Integer> arr, int i, int j) {
+        
+        for(int k=i; k>=1; k--) {
+            
+            int val = arr.get(k);
+            if(val > arr.get(k-1)) {
+                continue;
+            }
+            else {
+                int temp = arr.get(k-1);
+                arr.set(k-1,arr.get(k));
+                arr.set(k, temp);
+            }
+        }
+    }
+
+
+    public static void insertionSort2(int n, List<Integer> arr) {
+    // Write your code here
+    
+    for(int i=1; i<arr.size(); i++) {
+        checkAgainst(arr,i,0);
+        printList(arr);
+    }
+  }
+}
+
+
+39. Running Time of Algorithms:
+
+
+public static int runningTime(List<Integer> arr) {
+    // Write your code here
+    int shift=0;
+    
+    for(int i=0; i<arr.size(); i++) {
+          for(int k=i; k>=1; k--) {
+            
+            int curr = arr.get(k);
+            if(curr < arr.get(k-1)) {
+                int temp = curr;
+                arr.set(k,arr.get(k-1));
+                arr.set(k-1, temp);
+                shift++;
+            }
+        }
+    }
+    return shift;
+}
+
+
+40. Cavity Map:
+
+
+public static List<String> cavityMap(List<String> grid) {
+    // Write your code here
+    
+    for(int i=1; i<grid.size()-1; i++) {
+            String prev = grid.get(i-1);
+            String curr = grid.get(i);
+            String next = grid.get(i+1);
+            
+            for(int j=1; j < curr.length()-1; j++) {
+                
+                //converting char into int with the help of Character.getNumericValue(c)                   method
+                int up = Character.getNumericValue(prev.charAt(j));
+                int left = Character.getNumericValue(curr.charAt(j-1));
+                int mid = Character.getNumericValue(curr.charAt(j));
+                int right = Character.getNumericValue(curr.charAt(j+1));
+                int down = Character.getNumericValue(next.charAt(j));
+                
+                if(mid>up && mid>left && mid>right && mid>down) {
+                    char ch = 'X';
+                    curr = curr.substring(0, j) + ch+ curr.substring(j + 1);
+                    grid.set(i, curr);
+                }
+            }
+        }
+        
+        List<String> result = new ArrayList<>();
+        result = grid;
+        System.out.println(result);
+        return result;
+}
