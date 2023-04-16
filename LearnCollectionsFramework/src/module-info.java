@@ -1,0 +1,9 @@
+/**
+ * 
+ */
+/**
+ * @author sigma
+ *
+ */
+module LearnCollectionsFramework {
+}
