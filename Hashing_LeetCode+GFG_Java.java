@@ -1,4 +1,4 @@
-1. Apply Operations to an array:
+Apply Operations to an array:
 class Solution {
    public int[] applyOperations(int[] nums) {
       
@@ -26,7 +26,7 @@ class Solution {
 
 
 
-2. Determine if Two Events Have Conflict:
+2 Determine if Two Events Have Conflict:
 
 Version1:
 
@@ -115,7 +115,7 @@ class Solution {
 		return false;
 
 	}
-  
+
 3. Two Sum:
 TC: O(5ms) Efficient Approach (Kumar k)
 
@@ -372,5 +372,158 @@ class Solution {
 			}
 		}
         return ans;
+    }
+}
+
+9. Longest consecutive subsequence:
+
+My Approach: 
+TC: O(nlogn)
+
+class Solution {
+    public int longestConsecutive(int[] nums) {
+        
+        int longest=0;
+		int length=0;
+		Map<Integer,Integer> map = new HashMap<>();
+		Set<Integer> set = new LinkedHashSet<>();
+		
+		Arrays.sort(nums);
+		for(int num:nums) {
+			set.add(num);
+		}
+        
+		if(nums.length==0) {
+			return length;
+		}
+		else {
+			// Arrays.sort(nums);	
+//			map.put(nums[0], 1);
+//			int length = 1;
+			
+			for(int a:set) {
+				if(map.containsKey(a-1) && !map.containsKey(a)) {
+					map.put(a, 1);
+					length++;
+				}
+				else {
+					map.clear();
+					System.out.println(map);
+					if(longest < length) {
+						longest = length;
+					}
+					map.put(a, 1);
+					length=1;
+				}
+			}
+		}
+		if(longest < length) {
+			longest = length;
+		}
+//		System.out.println(length);
+		return longest;
+    }
+}
+
+Kumar K approach:(1)
+
+TC: O(n)
+
+class Solution {
+    public int longestConsecutive(int[] nums) {
+        
+        Map<Integer,Boolean> hmap=new HashMap<>();
+        for(int num:nums){
+            hmap.put(num,true);
+        }
+        int longestSequence=0;
+        Map<Integer,Integer> checkMap=new HashMap<>();
+        for(int i=0;i<nums.length;i++){
+            if(!hmap.get(nums[i])) continue;
+            int num=nums[i];
+            int flag=0;
+            while(hmap.containsKey(num)){
+                if(checkMap.containsKey(num)){
+                    checkMap.put(nums[i],checkMap.get(num));
+                    flag=-1;
+                    break;
+                }
+                hmap.put(num,false);
+                num--;
+            }
+            if(flag==0)checkMap.put(nums[i],num+1);
+            int sequenceLength=nums[i]+1-checkMap.get(nums[i]);
+            longestSequence=Math.max(longestSequence,sequenceLength);
+        }
+        return longestSequence;
+    }
+}
+
+Kumar K(2):
+TC: O(2*n) = O(n)
+SC: O(2*n) = O(n)
+
+class Solution {
+    public int longestConsecutive(int[] nums) {
+        
+        Map<Integer,Boolean> present=new HashMap<>();
+		Map<Integer,Boolean> checked=new HashMap<>();
+		int longestSequence = 0;
+		
+		for(int num:nums) {
+			present.put(num, true);
+		}
+		System.out.println(present);
+		
+		for(int a:nums) {
+			if(!checked.containsKey(a) && !present.containsKey(a-1)) {
+				int currentChain = 0;
+				int start = a;
+				
+				while(present.containsKey(start)) {
+					currentChain++;
+					checked.put(start, true);
+					start++;
+				}
+				
+				longestSequence = Math.max(longestSequence, currentChain);
+			}
+		}
+		return longestSequence;
+    }
+}
+
+10.Largest subarray with 0 sum:
+
+TC: O(n)
+SC: O(n)
+class GfG
+{
+    int maxLen(int arr[], int n)
+    {
+		int[] prefixSum = new int[arr.length];
+		Map<Integer,Integer> prefixSumIndex = new HashMap<>(); //<prefixSum[i],index(first occurence)>
+		int tempSum=0, sum=0, largest=0;
+
+		//Build prefixSum array.
+		for(int i=0; i<arr.length; i++) {
+			tempSum += arr[i];
+			prefixSum[i] = tempSum;
+		}
+		
+		
+		prefixSumIndex.put(0,-1); // put sum=0 at index=-1 in prefixSumIndex map.
+		for(int i=0; i<prefixSum.length; i++) {
+			sum = prefixSum[i];
+			
+			if(prefixSumIndex.containsKey(sum)) {
+				int diff = i - prefixSumIndex.get(sum);
+				largest = Math.max(largest, diff);
+			}
+			else {
+				prefixSumIndex.put(sum, i);
+			}
+		}
+		return largest;
     }
 }
