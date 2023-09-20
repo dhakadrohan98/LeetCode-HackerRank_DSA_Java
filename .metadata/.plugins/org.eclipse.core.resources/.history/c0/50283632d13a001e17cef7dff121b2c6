@@ -1,0 +1,18 @@
+package com.code.trees;
+
+public class Trees {
+	
+	private int data;
+	private Trees left;
+	private Trees right;
+	
+	public Trees(int data) {
+		this.data = data;
+	}
+
+	public static void main(String[] args) {
+		System.out.println("hi");
+
+	}
+
+}
