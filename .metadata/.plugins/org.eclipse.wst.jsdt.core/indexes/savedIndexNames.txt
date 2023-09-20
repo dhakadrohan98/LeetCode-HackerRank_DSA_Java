@@ -1,0 +1,1 @@
+INDEX VERSION 1.4+/home/devendrasuryawanshi/Documents/Learning Material/Java Codes/.metadata/.plugins/org.eclipse.wst.jsdt.core/indexes
